@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personal Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <h1>Personal Expense Tracker</h1>
+    <p>Track your money. Manage your future.</p>
+</header>
+
+<main>
+
+    <!-- Overall total -->
+    <section class="summary">
+        <h2>Total Expenses</h2>
+        <p class="total">₹{{ "%.2f"|format(total) }}</p>
+        <p class="summary-note">Total of all recorded expenses</p>
+    </section>
+
+    <!-- Add expense -->
+    <section class="card">
+        <h2>Add a New Expense</h2>
+
+        <form action="{{ url_for('add_expense') }}"
+              method="POST" class="expense-form">
+
+            <label for="title">Expense Name</label>
+            <input type="text" id="title" name="title"
+                   placeholder="e.g. Groceries" required>
+
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="">Select category</option>
+                <option value="Food">Food</option>
+                <option value="Travel">Travel</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Education">Education</option>
+                <option value="Bills">Bills</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="amount">Amount (₹)</label>
+            <input type="number" id="amount" name="amount"
+                   min="0.01" step="0.01"
+                   placeholder="Enter amount" required>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <button type="submit">Add Expense</button>
+        </form>
+    </section>
+
+    <!-- Search and filters -->
+    <section class="card">
+        <h2>Search Your Expenses</h2>
+        <p class="section-description">
+            Find out when you spent money and how much you spent.
+            You can combine the filters.
+        </p>
+
+        <form action="{{ url_for('home') }}"
+              method="GET" class="filter-form">
+
+            <div class="filter-grid">
+
+                <div class="filter-field">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category"
+                           placeholder="Food, Travel..."
+                           value="{{ category }}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="search_date">Specific Date</label>
+                    <input type="date" id="search_date"
+                           name="search_date" value="{{ search_date }}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="search_month">Month</label>
+                    <input type="month" id="search_month"
+                           name="search_month" value="{{ search_month }}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="search_year">Year</label>
+                    <input type="number" id="search_year"
+                           name="search_year" min="1900" max="2100"
+                           placeholder="e.g. 2026"
+                           value="{{ search_year }}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="amount_filter">Amount Filter</label>
+                    <select id="amount_filter" name="amount_filter">
+                        <option value="all"
+                            {% if amount_filter == "all" %}selected{% endif %}>
+                            All amounts
+                        </option>
+
+                        <option value="200_300"
+                            {% if amount_filter == "200_300" %}selected{% endif %}>
+                            ₹200 - ₹300
+                        </option>
+
+                        <option value="above_500"
+                            {% if amount_filter == "above_500" %}selected{% endif %}>
+                            Above ₹500
+                        </option>
+
+                        <option value="above_1000"
+                            {% if amount_filter == "above_1000" %}selected{% endif %}>
+                            Above ₹1,000
+                        </option>
+
+                        <option value="custom_between"
+                            {% if amount_filter == "custom_between" %}selected{% endif %}>
+                            Between my amounts
+                        </option>
+
+                        <option value="custom_above"
+                            {% if amount_filter == "custom_above" %}selected{% endif %}>
+                            Above my amount
+                        </option>
+
+                        <option value="custom_below"
+                            {% if amount_filter == "custom_below" %}selected{% endif %}>
+                            Below my amount
+                        </option>
+                    </select>
+                </div>
+
+                <div class="filter-field">
+                    <label for="min_amount">Minimum / Amount (₹)</label>
+                    <input type="number" id="min_amount"
+                           name="min_amount" min="0" step="0.01"
+                           placeholder="e.g. 400"
+                           value="{{ min_amount }}">
+                </div>
+
+                <div class="filter-field">
+                    <label for="max_amount">Maximum Amount (₹)</label>
+                    <input type="number" id="max_amount"
+                           name="max_amount" min="0" step="0.01"
+                           placeholder="e.g. 800"
+                           value="{{ max_amount }}">
+                </div>
+
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit">Search Expenses</button>
+                <a href="{{ url_for('home') }}" class="reset-btn">
+                    Show All
+                </a>
+            </div>
+        </form>
+    </section>
+
+    <!-- Matching total -->
+    <section class="summary matching-summary">
+        <h2>Total of Matching Expenses</h2>
+        <p class="total">₹{{ "%.2f"|format(filtered_total) }}</p>
+        <p class="summary-note">
+            {{ expenses|length }} matching transaction(s)
+        </p>
+    </section>
+
+    <!-- Expense history -->
+    <section class="card">
+        <h2>Expense History</h2>
+
+        {% if expenses %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.title }}</td>
+                        <td>
+                            <span class="category-tag">
+                                {{ expense.category }}
+                            </span>
+                        </td>
+                        <td class="amount-cell">
+                            ₹{{ "%.2f"|format(expense.amount) }}
+                        </td>
+                        <td>{{ expense.date }}</td>
+                        <td>
+                            <form
+                                action="{{ url_for('delete_expense', expense_id=expense.id) }}"
+                                method="POST" class="delete-form"
+                                onsubmit="return confirm('Delete this expense?');">
+
+                                <button type="submit" class="delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <p class="empty">
+            No matching expenses found. Try changing your filters
+            or add a new expense.
+        </p>
+        {% endif %}
+    </section>
+
+</main>
+
+<footer>
+    <p>Personal Expense Tracker | Manage your money wisely</p>
+</footer>
+
+</body>
+</html>

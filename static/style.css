@@ -1,0 +1,299 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fb;
+    color: #263238;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #173b67, #2878a5);
+    color: white;
+    text-align: center;
+    padding: 30px 15px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+/* Main content */
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+/* Summary cards */
+.summary {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    border-left: 6px solid #2878a5;
+}
+
+.matching-summary {
+    border-left-color: #176b45;
+}
+
+.summary h2 {
+    color: #52616b;
+    font-size: 22px;
+}
+
+.total {
+    color: #176b45;
+    font-size: 36px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.summary-note {
+    color: #687783;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Content cards */
+.card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+}
+
+.card h2 {
+    color: #173b67;
+    margin-bottom: 15px;
+}
+
+.section-description {
+    color: #687783;
+    margin-bottom: 20px;
+}
+
+/* Forms */
+.expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccd5df;
+    border-radius: 6px;
+    font-size: 15px;
+    background: white;
+    color: #263238;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2878a5;
+    box-shadow: 0 0 0 2px rgba(40, 120, 165, 0.12);
+}
+
+/* Buttons */
+button {
+    padding: 12px 18px;
+    background: #2878a5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #173b67;
+}
+
+.expense-form button {
+    margin-top: 12px;
+}
+
+/* Search and filter section */
+.filter-form {
+    margin-top: 20px;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.filter-field {
+    min-width: 0;
+}
+
+.filter-field label {
+    margin-bottom: 7px;
+}
+
+.filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+}
+
+/* Show All link */
+.reset-btn {
+    display: inline-block;
+    padding: 11px 18px;
+    background: #e4eaf0;
+    color: #263238;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.reset-btn:hover {
+    background: #ccd5df;
+}
+
+/* Expense table */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th,
+td {
+    padding: 13px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    background: #173b67;
+    color: white;
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background: #f2f7fb;
+}
+
+.amount-cell {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Category label */
+.category-tag {
+    display: inline-block;
+    background: #e5f1fa;
+    color: #205b83;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+}
+
+/* Delete button */
+.delete-form {
+    margin: 0;
+}
+
+.delete-btn {
+    background: #d94141;
+    padding: 8px 12px;
+}
+
+.delete-btn:hover {
+    background: #a82424;
+}
+
+/* Empty search results */
+.empty {
+    text-align: center;
+    padding: 25px 10px;
+    color: #687783;
+    background: #f8fafc;
+    border-radius: 6px;
+}
+
+/* Footer */
+footer {
+    background: #173b67;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    margin-top: 40px;
+}
+
+/* Mobile responsive design */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 25px;
+    }
+
+    main {
+        width: 94%;
+        margin: 18px auto;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .summary {
+        padding: 20px 12px;
+    }
+
+    .total {
+        font-size: 30px;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-actions button,
+    .filter-actions .reset-btn {
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+}
